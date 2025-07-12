@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1EF1CA4E3D27986AD48D9BA0 /* Pods_AllSee_AllSeeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15F9D9CF56F2A2278B29ACE4 /* Pods_AllSee_AllSeeUITests.framework */; };
+		62A5921A2A27375F016B6352 /* Pods_AllSee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466B68D1113F4AB8E7B48B14 /* Pods_AllSee.framework */; };
+		B47622DD487C94B640C16DBB /* Pods_AllSeeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D77C2B9666510D25195F49 /* Pods_AllSeeTests.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7D50582E2E22E2FA0096D0C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,9 +30,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14D25482B343B76405315178 /* Pods-AllSeeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSeeTests.release.xcconfig"; path = "Target Support Files/Pods-AllSeeTests/Pods-AllSeeTests.release.xcconfig"; sourceTree = "<group>"; };
+		15F9D9CF56F2A2278B29ACE4 /* Pods_AllSee_AllSeeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AllSee_AllSeeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		466B68D1113F4AB8E7B48B14 /* Pods_AllSee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AllSee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4858A006CA6843AA0F3930B3 /* Pods-AllSee-AllSeeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSee-AllSeeUITests.debug.xcconfig"; path = "Target Support Files/Pods-AllSee-AllSeeUITests/Pods-AllSee-AllSeeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		60D77C2B9666510D25195F49 /* Pods_AllSeeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AllSeeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		698C28B8D3861E2583622A57 /* Pods-AllSee-AllSeeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSee-AllSeeUITests.release.xcconfig"; path = "Target Support Files/Pods-AllSee-AllSeeUITests/Pods-AllSee-AllSeeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		7B1C0728E456444532BC59F9 /* Pods-AllSee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSee.release.xcconfig"; path = "Target Support Files/Pods-AllSee/Pods-AllSee.release.xcconfig"; sourceTree = "<group>"; };
 		7D5058172E22E2F80096D0C0 /* AllSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D50582D2E22E2FA0096D0C0 /* AllSeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllSeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D5058372E22E2FA0096D0C0 /* AllSeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllSeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F89AE69F555E3D2A3D52FF6 /* Pods-AllSee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSee.debug.xcconfig"; path = "Target Support Files/Pods-AllSee/Pods-AllSee.debug.xcconfig"; sourceTree = "<group>"; };
+		ADAB22804124FA7D50C05CFD /* Pods-AllSeeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllSeeTests.debug.xcconfig"; path = "Target Support Files/Pods-AllSeeTests/Pods-AllSeeTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -65,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62A5921A2A27375F016B6352 /* Pods_AllSee.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B47622DD487C94B640C16DBB /* Pods_AllSeeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EF1CA4E3D27986AD48D9BA0 /* Pods_AllSee_AllSeeUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +110,8 @@
 				7D5058302E22E2FA0096D0C0 /* AllSeeTests */,
 				7D50583A2E22E2FA0096D0C0 /* AllSeeUITests */,
 				7D5058182E22E2F80096D0C0 /* Products */,
+				E8065DE9EE4A4A28727E7D81 /* Pods */,
+				DDE407E604F9B583364B8CB3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +125,29 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		DDE407E604F9B583364B8CB3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				466B68D1113F4AB8E7B48B14 /* Pods_AllSee.framework */,
+				15F9D9CF56F2A2278B29ACE4 /* Pods_AllSee_AllSeeUITests.framework */,
+				60D77C2B9666510D25195F49 /* Pods_AllSeeTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E8065DE9EE4A4A28727E7D81 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8F89AE69F555E3D2A3D52FF6 /* Pods-AllSee.debug.xcconfig */,
+				7B1C0728E456444532BC59F9 /* Pods-AllSee.release.xcconfig */,
+				4858A006CA6843AA0F3930B3 /* Pods-AllSee-AllSeeUITests.debug.xcconfig */,
+				698C28B8D3861E2583622A57 /* Pods-AllSee-AllSeeUITests.release.xcconfig */,
+				ADAB22804124FA7D50C05CFD /* Pods-AllSeeTests.debug.xcconfig */,
+				14D25482B343B76405315178 /* Pods-AllSeeTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,9 +155,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D5058402E22E2FA0096D0C0 /* Build configuration list for PBXNativeTarget "AllSee" */;
 			buildPhases = (
+				4240352F428D65FC478982C7 /* [CP] Check Pods Manifest.lock */,
 				7D5058132E22E2F80096D0C0 /* Sources */,
 				7D5058142E22E2F80096D0C0 /* Frameworks */,
 				7D5058152E22E2F80096D0C0 /* Resources */,
+				C7FC22B2345781EF3D35E74B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -124,8 +169,6 @@
 				7D5058192E22E2F80096D0C0 /* AllSee */,
 			);
 			name = AllSee;
-			packageProductDependencies = (
-			);
 			productName = AllSee;
 			productReference = 7D5058172E22E2F80096D0C0 /* AllSee.app */;
 			productType = "com.apple.product-type.application";
@@ -134,9 +177,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D5058452E22E2FA0096D0C0 /* Build configuration list for PBXNativeTarget "AllSeeTests" */;
 			buildPhases = (
+				3D3307A61290F709F4D73572 /* [CP] Check Pods Manifest.lock */,
 				7D5058292E22E2FA0096D0C0 /* Sources */,
 				7D50582A2E22E2FA0096D0C0 /* Frameworks */,
 				7D50582B2E22E2FA0096D0C0 /* Resources */,
+				E104C3CC5171E9017A570823 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -147,8 +192,6 @@
 				7D5058302E22E2FA0096D0C0 /* AllSeeTests */,
 			);
 			name = AllSeeTests;
-			packageProductDependencies = (
-			);
 			productName = AllSeeTests;
 			productReference = 7D50582D2E22E2FA0096D0C0 /* AllSeeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -157,9 +200,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D5058482E22E2FA0096D0C0 /* Build configuration list for PBXNativeTarget "AllSeeUITests" */;
 			buildPhases = (
+				A15DB1D0862DCB8195B3CCA6 /* [CP] Check Pods Manifest.lock */,
 				7D5058332E22E2FA0096D0C0 /* Sources */,
 				7D5058342E22E2FA0096D0C0 /* Frameworks */,
 				7D5058352E22E2FA0096D0C0 /* Resources */,
+				A746DA4BB1A9EF70E8B763F2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -170,8 +215,6 @@
 				7D50583A2E22E2FA0096D0C0 /* AllSeeUITests */,
 			);
 			name = AllSeeUITests;
-			packageProductDependencies = (
-			);
 			productName = AllSeeUITests;
 			productReference = 7D5058372E22E2FA0096D0C0 /* AllSeeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -244,6 +287,138 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3D3307A61290F709F4D73572 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AllSeeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4240352F428D65FC478982C7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AllSee-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A15DB1D0862DCB8195B3CCA6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AllSee-AllSeeUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A746DA4BB1A9EF70E8B763F2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSee-AllSeeUITests/Pods-AllSee-AllSeeUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSee-AllSeeUITests/Pods-AllSee-AllSeeUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AllSee-AllSeeUITests/Pods-AllSee-AllSeeUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C7FC22B2345781EF3D35E74B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSee/Pods-AllSee-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSee/Pods-AllSee-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AllSee/Pods-AllSee-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E104C3CC5171E9017A570823 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSeeTests/Pods-AllSeeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AllSeeTests/Pods-AllSeeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AllSeeTests/Pods-AllSeeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7D5058132E22E2F80096D0C0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -284,17 +459,19 @@
 /* Begin XCBuildConfiguration section */
 		7D5058412E22E2FA0096D0C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F89AE69F555E3D2A3D52FF6 /* Pods-AllSee.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 685B4G8J9B;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AllSee/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -312,17 +489,19 @@
 		};
 		7D5058422E22E2FA0096D0C0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B1C0728E456444532BC59F9 /* Pods-AllSee.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 685B4G8J9B;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AllSee/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -461,6 +640,7 @@
 		};
 		7D5058462E22E2FA0096D0C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ADAB22804124FA7D50C05CFD /* Pods-AllSeeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -480,6 +660,7 @@
 		};
 		7D5058472E22E2FA0096D0C0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14D25482B343B76405315178 /* Pods-AllSeeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -499,6 +680,7 @@
 		};
 		7D5058492E22E2FA0096D0C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4858A006CA6843AA0F3930B3 /* Pods-AllSee-AllSeeUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -516,6 +698,7 @@
 		};
 		7D50584A2E22E2FA0096D0C0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698C28B8D3861E2583622A57 /* Pods-AllSee-AllSeeUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

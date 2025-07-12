@@ -1,0 +1,6 @@
+framework module Pods_AllSee {
+  umbrella header "Pods-AllSee-umbrella.h"
+
+  export *
+  module * { export * }
+}
