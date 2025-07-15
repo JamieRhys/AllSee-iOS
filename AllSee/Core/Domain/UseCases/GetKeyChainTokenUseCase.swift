@@ -13,6 +13,6 @@ protocol GetKeyChainTokenUseCase {
 
 class GetKeyChainTokenUseCaseImpl: GetKeyChainTokenUseCase {
     func execute(_ identifier: String, service: String) throws -> String {
-        return try KeyChain.getToken(identifier: identifier, service: service)
+        return try KeyChain().get(identifier: identifier, service: service)
     }
 }
