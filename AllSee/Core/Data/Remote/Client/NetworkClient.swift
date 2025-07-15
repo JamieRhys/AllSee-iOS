@@ -48,7 +48,7 @@ final class NetworkClient {
                 throw NetworkError.unknownError(urlError)
             }
         } catch let error as NetworkError {
-            log.error("[NetworkClient] Network Error: \(error)")
+            log.error("[NetworkClient] Uncaught Network Error: \(error)")
             throw error
         } catch {
             log.error("[NetworkClient] Unknown Error: \(error)")
