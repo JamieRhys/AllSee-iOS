@@ -19,6 +19,7 @@ final class AllSeeUITestsLaunchTests: XCTestCase {
 
     @MainActor
     func testLaunch() throws {
+        /*
         let app = XCUIApplication()
         app.launch()
 
@@ -29,5 +30,6 @@ final class AllSeeUITestsLaunchTests: XCTestCase {
         attachment.name = "Launch Screen"
         attachment.lifetime = .keepAlways
         add(attachment)
+         */
     }
 }

@@ -1,5 +1,4 @@
 PODS:
-  - NeedleFoundation (0.25.1)
   - Realm (20.0.3):
     - Realm/Headers (= 20.0.3)
   - Realm/Headers (20.0.3)
@@ -16,19 +15,19 @@ PODS:
   - RxTest (6.9.0):
     - RxSwift (= 6.9.0)
   - SnapKit (5.7.1)
+  - Swinject (2.9.1)
 
 DEPENDENCIES:
-  - NeedleFoundation
   - RealmSwift
   - RxBlocking
   - RxCocoa
   - RxSwift
   - RxTest
   - SnapKit
+  - Swinject
 
 SPEC REPOS:
   trunk:
-    - NeedleFoundation
     - Realm
     - RealmSwift
     - RxBlocking
@@ -37,9 +36,9 @@ SPEC REPOS:
     - RxSwift
     - RxTest
     - SnapKit
+    - Swinject
 
 SPEC CHECKSUMS:
-  NeedleFoundation: ae0df46708acf26bd030390f2800bf167f29a942
   Realm: 853e5089d6042dff807bda000277eadfe2da93d2
   RealmSwift: f33c19577cefcbf681345d721fcbc7b42be4c949
   RxBlocking: 5d2b26d019b6ba9eb3f58638611f124609c44822
@@ -48,7 +47,8 @@ SPEC CHECKSUMS:
   RxSwift: 31649ace6aceeb422e16ff71c60804f9c3281ed9
   RxTest: fa7749822359a10a19b9fa32b80dbe608e4ce44e
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  Swinject: a827d508c6270da03ec74e558e728917a888fa9b
 
-PODFILE CHECKSUM: 28ae8223be99085a682b05ad666306fd2984c5c3
+PODFILE CHECKSUM: 3dfe5c2cd0ad6f188ce286c8c1352d2ade1aba74
 
 COCOAPODS: 1.16.2

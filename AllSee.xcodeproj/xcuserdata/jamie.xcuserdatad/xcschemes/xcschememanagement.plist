@@ -7,7 +7,25 @@
 		<key>AllSee.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>18</integer>
+			<integer>19</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>7D5058162E22E2F80096D0C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7D50582C2E22E2FA0096D0C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7D5058362E22E2FA0096D0C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
