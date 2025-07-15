@@ -13,7 +13,7 @@ protocol UpsertKeyChainTokenuseCase {
 
 class UpsertKeyChainTokenUseCaseImpl: UpsertKeyChainTokenuseCase {
     func execute(_ token: String, identifier: String, service: String) throws {
-        try KeyChain.upsertToken(
+        try KeyChain().upsert(
             token.data(using: String.Encoding.utf8)!,
             identifier: identifier,
             service: service

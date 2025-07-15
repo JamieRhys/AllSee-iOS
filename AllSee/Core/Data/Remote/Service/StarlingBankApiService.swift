@@ -20,6 +20,7 @@ final class StarlingBankApiServiceImpl: StarlingBankApiService {
     private let baseUrl = URL(string: "https://api-starlingbank.com/api/v2/")!
     
     init(
+        
         log: Logger,
         networkClient: NetworkClient,
     ) {
@@ -81,7 +82,7 @@ final class StarlingBankApiServiceImpl: StarlingBankApiService {
     // Helper functions
     
     private func getToken(identifier: String) throws -> String {
-        guard let token = try? KeyChain.getToken(identifier: identifier, service: KeyChainTokens.service) else { throw ApiError.missingToken }
+        guard let token = try? KeyChain().get(identifier: identifier, service: KeyChainTokens.service) else { throw ApiError.missingToken } // TODO: Replace with use case instead.
         return token
     }
     
