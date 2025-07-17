@@ -11,6 +11,8 @@ import OSLog
 protocol StarlingBankApiService {
     func fetchAccounts() async throws -> AccountsDto
     
+    func fetchIndividualInformation() async throws -> IndividualDto
+    
     func refreshAccessToken() async throws
 }
 
@@ -52,6 +54,43 @@ final class StarlingBankApiServiceImpl: StarlingBankApiService {
                     if apiError?.error == "invalid_token" {
                         try await refreshAccessToken()
                         return try await fetchAccounts()
+                    }
+                } else {
+                    throw ApiError.invalidResponse(error)
+                }
+            default:
+                throw ApiError.invalidResponse(error)
+            }
+            
+            throw ApiError.unknownError(error)
+        } catch DecodingError.dataCorrupted {
+            throw ApiError.dataCorrupted
+        } catch {
+            throw ApiError.unknownError(error)
+        }
+    }
+    
+    func fetchIndividualInformation() async throws -> IndividualDto {
+        do {
+            let token = try await getAccessToken()
+            let url = baseUrl.appendingPathComponent("account-holder/individual")
+            let data = try await networkClient.get(
+                from: url,
+                headers: ["Authorization": "Bearer \(token)"]
+            )
+            
+            return try decodeJsonData(IndividualDto.self, from: data)
+        } catch let error as ApiError {
+            throw error
+        } catch let error as NetworkError {
+            switch error {
+            case .badServerResponse(let code, let data):
+                if code == 403, let data = data {
+                    let apiError = try? decodeJsonData(ApiErrorDto.self, from: data)
+                    
+                    if apiError?.error == "invalid_token" {
+                        try await refreshAccessToken()
+                        return try await fetchIndividualInformation()
                     }
                 } else {
                     throw ApiError.invalidResponse(error)
