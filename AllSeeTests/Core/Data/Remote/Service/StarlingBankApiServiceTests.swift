@@ -182,8 +182,6 @@ final class StarlingBankApiServiceTests: XCTestCase {
         }
     }
     
-    // TODO: Network Error - Ensure function knows how to handle a network error. (e.g. timedOut)
-    
     func test_fetchAccounts_NetworkError() async {
         do {
             try keyChain.insert(
@@ -219,8 +217,6 @@ final class StarlingBankApiServiceTests: XCTestCase {
         }
     }
     
-    // TODO: JSON decode failure - Ensure function correctly throws dataCorrupted.
-    
     func test_fetchAccounts_JsonDecodeFailureWhenDecodingReturnedData() async {
         do {
             try keyChain.insert(
@@ -250,7 +246,212 @@ final class StarlingBankApiServiceTests: XCTestCase {
         }
     }
     
-    // TODO: Ensure function knows how to handle an unknown error.
+/*
+ * ==========================================================================
+ * Refresh Access Token
+ * ==========================================================================
+ */
+    
+    func test_fetchIndividualInformation_Success() async {
+        do {
+            try keyChain.insert(
+                "access-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.accessTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+        } catch {
+            XCTFail("Could not insert keychain.")
+        }
+        
+        let expected = IndividualDto(
+            title: "Mr",
+            firstName: "Joe",
+            lastName: "Bloggs",
+            dateOfBirth: "1975-01-01",
+            email: "joe.bloggs@example.com",
+            phone: "079000000001"
+        )
+        
+        networkClient.handler.append({ _, _, _ in
+            return try JSONEncoder().encode(expected)
+        })
+        
+        guard let actual = try? await sut.fetchIndividualInformation() else {
+            XCTFail("Failed to fetch individual information")
+            return // to satisfy xcode
+        }
+        
+        XCTAssertEqual(expected.title, actual.title)
+        XCTAssertEqual(expected.firstName, actual.firstName)
+    }
+    
+    func test_fetchIndividualInformation_MissingAccessToken() async {
+        let freshToken = FreshAccessTokenDto(
+            access_token: "fresh_access-token",
+            refresh_token: "fresh_refresh-token",
+            token_type: "refresh-token",
+            expires_in: 3600,
+            scope: "bunch; of; different; scopes;"
+        )
+        do {
+            try keyChain.insert(
+                "access-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.accessTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+            try keyChain.insert(
+                "refresh-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.refreshTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+        } catch {
+            XCTFail("Could not insert keychain.")
+        }
+        
+        let expected = IndividualDto(
+            title: "Mr",
+            firstName: "Joe",
+            lastName: "Bloggs",
+            dateOfBirth: "1975-01-01",
+            email: "joe.bloggs@example.com",
+            phone: "079000000001"
+        )
+        let errorResponse = ApiErrorDto(
+            error: "invalid_token",
+            errorDescription: "Unable to validate token. Might it be expired?"
+        )
+        let errorData = try! JSONEncoder().encode(errorResponse)
+        
+        networkClient.handler.append({ _, _, _ in
+            throw NetworkError.badServerResponse(statusCode: 403, data: errorData)
+        })
+        networkClient.handler.append({ _, _, _ in
+            return try JSONEncoder().encode(freshToken)
+        })
+        networkClient.handler.append({ _, _, _ in
+            return try JSONEncoder().encode(expected)
+        })
+        
+        do {
+            let actual = try await sut.fetchIndividualInformation()
+            
+            XCTAssertEqual(
+                expected.title,
+                actual.title
+            )
+            XCTAssertEqual(
+                expected.firstName,
+                actual.firstName
+            )
+        } catch {
+            XCTFail("Expected to pass. Got \(error)")
+        }
+    }
+    
+    func test_fetchIndividualInformation_UnknownBadServerResponse() async {
+        do {
+            try keyChain.insert(
+                "access-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.accessTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+            try keyChain.insert(
+                "refresh-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.refreshTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+        } catch {
+            XCTFail("Could not insert keychain.")
+        }
+        
+        let errorResponse = ApiErrorDto(
+            error: "unknown_error",
+            errorDescription: "",
+        )
+        let errorData = try! JSONEncoder().encode(errorResponse)
+        
+        networkClient.handler.append({ _, _, _ in
+            throw NetworkError.badServerResponse(statusCode: 404, data: errorData)
+        })
+        
+        do {
+            _ = try await sut.fetchIndividualInformation()
+            XCTFail("Expected ApiError.invalidResponse to be thrown.")
+        } catch let error as ApiError {
+            switch error {
+            case ApiError.invalidResponse:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Expected ApiError.invalidResponse, got: \(error)")
+            }
+        } catch {
+            XCTFail("Expected ApiError.invalidResponse, got: \(error)")
+        }
+    }
+    
+    func test_fetchIndividualInformation_NetworkError() async {
+        do {
+            try keyChain.insert(
+                "access-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.accessTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+            try keyChain.insert(
+                "refresh-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.refreshTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+        } catch {
+            XCTFail("Could not insert keychain.")
+        }
+        
+        networkClient.handler.append({ _, _, _ in
+            throw NetworkError.requestTimedOut
+        })
+        
+        do {
+            _ = try await sut.fetchIndividualInformation()
+            XCTFail("Expected NetworkError.requestTimedOut to be thrown")
+        } catch let error as ApiError {
+            switch error {
+            case ApiError.invalidResponse:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Expected ApiError.invalidResponse to be thrown, got: \(error)")
+            }
+        } catch {
+            XCTFail("Expected ApiError.invalidResponse to be thrown, got: \(error)")
+        }
+    }
+    
+    func test_fetchIndividualInformation_JsonDecodeFailureWhenDecodingReturnedData() async {
+        do {
+            try keyChain.insert(
+                "access-token".data(using: .utf8)!,
+                identifier: KeyChainTokens.accessTokenIdentifier,
+                service: KeyChainTokens.service
+            )
+        } catch {
+            XCTFail("Could not insert keychain.")
+        }
+        
+        networkClient.handler.append({ _, _, _ in
+            return "Unusable Json Data".data(using: .utf8)!
+        })
+        
+        do {
+            _ = try await sut.fetchIndividualInformation()
+        } catch let error as ApiError {
+            switch error {
+            case .dataCorrupted:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Expected ApiError.dataCorrupted, got \(error)")
+            }
+        } catch {
+            XCTFail("Expected ApiError.dataCorrupted, got \(error)")
+        }
+    }
     
 /*
  * ==========================================================================
