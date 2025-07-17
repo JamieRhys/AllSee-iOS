@@ -8,7 +8,12 @@
 import Foundation
 import OSLog
 
-final class NetworkClient {
+protocol NetworkClient {
+    func get(from url: URL, headers: [String : String]?) async throws -> Data
+    func post(to url: URL, headers: [String : String]?, components: URLComponents) async throws -> Data
+}
+
+final class NetworkClientImpl: NetworkClient {
     private let session: URLSession
     private let log: Logger
     

@@ -13,6 +13,8 @@ enum ApiError: Error {
     case missingRefreshToken
     case missingToken
     case invalidToken
+    case invalidResponse(Error)
     case dataCorrupted
+    case couldNotRefreshToken(String, String)
     case unknownError(Error)
 }

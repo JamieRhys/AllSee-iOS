@@ -10,6 +10,11 @@ import OSLog
 @testable import AllSee
 
 final class NetworkClientTests: XCTestCase {
+/*
+ * ================================================================================
+ * Setup and Teardown
+ * ================================================================================
+ */
     var sut: NetworkClient!
     var log: Logger!
     
@@ -25,7 +30,7 @@ final class NetworkClientTests: XCTestCase {
         
         let session = URLSession(configuration: config)
         
-        sut = NetworkClient(session: session, log: log)
+        sut = NetworkClientImpl(session: session, log: log)
     }
     
     override func tearDown() {
@@ -48,7 +53,7 @@ final class NetworkClientTests: XCTestCase {
         }
         
         let url = URL(string: mockBaseURL)!
-        let data = try await sut.get(from: url)
+        let data = try await sut.get(from: url, headers: nil)
         
         XCTAssertEqual(data, expectedData)
     }
@@ -64,7 +69,7 @@ final class NetworkClientTests: XCTestCase {
         let url = URL(string: mockBaseURL)!
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: url, headers: nil)
             XCTFail("Expected NetworkError.badServerResponse")
         } catch let error as NetworkError {
             switch error {
@@ -84,7 +89,7 @@ final class NetworkClientTests: XCTestCase {
         let url = URL(string: mockBaseURL)!
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: url, headers: nil)
             XCTFail("Expected NetworkError.requestTimedOut")
         } catch let error as NetworkError {
             switch error {
@@ -104,7 +109,7 @@ final class NetworkClientTests: XCTestCase {
         let url = URL(string: mockBaseURL)!
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: url, headers: nil)
             XCTFail("Expected NetworkError.notConnectedToInternet")
         } catch let error as NetworkError {
             switch error {
@@ -124,7 +129,7 @@ final class NetworkClientTests: XCTestCase {
         let url = URL(string: mockBaseURL)!
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: url, headers: nil)
             XCTFail("Expected NetworkError.invalidUrl")
         } catch let error as NetworkError {
             switch error {
@@ -144,7 +149,7 @@ final class NetworkClientTests: XCTestCase {
         let url = URL(string: mockBaseURL)!
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: url, headers: nil)
             XCTFail("Expected NetworkError.unknownError")
         } catch let error as NetworkError {
             switch error {
@@ -194,7 +199,7 @@ final class NetworkClientTests: XCTestCase {
         components.queryItems = [URLQueryItem(name: "key", value: "value")]
         
         do {
-            _ = try await sut.post(to: url, components: components)
+            _ = try await sut.post(to: url, headers: nil, components: components)
             XCTFail("Expected NetworkError.requestTimedOut")
         } catch let error as NetworkError {
             switch error {
@@ -218,6 +223,7 @@ final class NetworkClientTests: XCTestCase {
         do {
             _ = try await sut.post(
                 to: url,
+                headers: nil,
                 components: components
             )
             XCTFail("Expected NetworkError.notConnectedToInternet")
@@ -243,6 +249,7 @@ final class NetworkClientTests: XCTestCase {
         do {
             _ = try await sut.post(
                 to: url,
+                headers: nil,
                 components: components
             )
             XCTFail("Expected NetworkError.invalidUrl")
@@ -268,6 +275,7 @@ final class NetworkClientTests: XCTestCase {
         do {
             _ = try await sut.post(
                 to: url,
+                headers: nil,
                 components: components
             )
             XCTFail("Expected NetworkError.unknownError")
@@ -298,6 +306,7 @@ final class NetworkClientTests: XCTestCase {
         do {
             _ = try await sut.post(
                 to: url,
+                headers: nil,
                 components: components
             )
             XCTFail("Expected NetworkError.badServerResponse")

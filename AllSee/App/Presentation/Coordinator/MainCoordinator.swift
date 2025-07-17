@@ -14,14 +14,17 @@ final class MainCoordinator : Coordinator {
     
     private let log: Logger = Logger()
     
-    private let networkClient: NetworkClient
     private let apiService: StarlingBankApiService
+    private let keyChain: KeyChainStorable
+    private let networkClient: NetworkClient
     
     init(navController: UINavigationController) {
         self.navController = navController
         
-        self.networkClient = NetworkClient(log: log)
+        self.keyChain = KeyChain()
+        self.networkClient = NetworkClientImpl(log: log)
         self.apiService = StarlingBankApiServiceImpl(
+            keyChain: keyChain,
             log: log,
             networkClient: networkClient
         )
