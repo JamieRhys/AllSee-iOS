@@ -30,8 +30,6 @@ final class MockKeyChain: KeyChainStorable {
     }
     
     func upsert(_ token: Data, identifier: String, service: String) throws {
-        let key = "\(service).\(identifier)"
-        
         do {
             try update(token, identifier: identifier, service: service)
         } catch let error as KeyChain.Errors {
