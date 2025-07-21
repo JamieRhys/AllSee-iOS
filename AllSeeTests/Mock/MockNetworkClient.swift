@@ -8,19 +8,7 @@
 import Foundation
 @testable import AllSee
 
-final class MockNetworkClient: NetworkClient {
-    /*
-    var handler: [((URL, [String : String]?, URLComponents?) async throws -> Data)]?
-  
-    func get(from url: URL, headers: [String : String]?) async throws -> Data {
-        return try await handler?(url, headers, nil) ?? Data()
-    }
-    
-    func post(to url: URL, headers: [String : String]? = nil, components: URLComponents) async throws -> Data {
-        return try await handler?(url, headers, components) ?? Data()
-    }
-    */
-    
+final class MockNetworkClient2: NetworkClient {
     var handler: [(URL, [String : String]?, URLComponents?) async throws -> Data] = []
     
     func get(from url: URL, headers: [String : String]?) async throws -> Data {

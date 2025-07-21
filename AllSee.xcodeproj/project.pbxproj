@@ -156,6 +156,7 @@
 			buildConfigurationList = 7D5058402E22E2FA0096D0C0 /* Build configuration list for PBXNativeTarget "AllSee" */;
 			buildPhases = (
 				4240352F428D65FC478982C7 /* [CP] Check Pods Manifest.lock */,
+				7D63446C2E2D085A0013D336 /* Run Cuckoo Generator */,
 				7D5058132E22E2F80096D0C0 /* Sources */,
 				7D5058142E22E2F80096D0C0 /* Frameworks */,
 				7D5058152E22E2F80096D0C0 /* Resources */,
@@ -178,6 +179,7 @@
 			buildConfigurationList = 7D5058452E22E2FA0096D0C0 /* Build configuration list for PBXNativeTarget "AllSeeTests" */;
 			buildPhases = (
 				3D3307A61290F709F4D73572 /* [CP] Check Pods Manifest.lock */,
+				7D6342ED2E2CF1000013D336 /* Run Cuckoo */,
 				7D5058292E22E2FA0096D0C0 /* Sources */,
 				7D50582A2E22E2FA0096D0C0 /* Frameworks */,
 				7D50582B2E22E2FA0096D0C0 /* Resources */,
@@ -331,6 +333,42 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7D6342ED2E2CF1000013D336 /* Run Cuckoo */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Cuckoo";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Running Cuckoo Generation script\"\nset -x \n\"${PODS_ROOT}/Cuckoo/cuckoonator\"\n";
+		};
+		7D63446C2E2D085A0013D336 /* Run Cuckoo Generator */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Cuckoo Generator";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Cuckoo/cuckoonator\"\n";
 		};
 		A15DB1D0862DCB8195B3CCA6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

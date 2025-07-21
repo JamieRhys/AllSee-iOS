@@ -1,0 +1,9 @@
+output = "AllSeeTests/GeneratedMocks.swift"
+
+[modules.AllSee]
+testableImports = ["AllSee"]
+sources = [
+    "AllSee/Core/Data/Remote/Client/NetworkClient.swift",
+    "AllSee/Core/Data/Remote/Service/StarlingBankApiService.swift",
+    "AllSee/Core/Data/Local/KeyChain/KeyChain.swift"
+]

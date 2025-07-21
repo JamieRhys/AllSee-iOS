@@ -8,6 +8,7 @@
 @testable import AllSee
 import OSLog
 import XCTest
+import Cuckoo
 
 final class StarlingBankApiServiceTests: XCTestCase {
 /*
@@ -15,23 +16,34 @@ final class StarlingBankApiServiceTests: XCTestCase {
  * Setup and Teardown
  * ==========================================================================
  */
-    
     var sut: StarlingBankApiService!
-    var networkClient: MockNetworkClient!
+    var mockNetworkClient: MockNetworkClient!
+    var mockKeyChain: MockKeyChainStorable!
     var log: Logger!
-    var keyChain: KeyChainStorable!
+    
+    private let accessToken = "access-token"
     
     override func setUp() {
         super.setUp()
         
-        keyChain = MockKeyChain()
+        mockNetworkClient = MockNetworkClient()
+        mockKeyChain = MockKeyChainStorable()
         log = Logger()
-        networkClient = MockNetworkClient()
         
         sut = StarlingBankApiServiceImpl(
-            keyChain: keyChain,
+            keyChain: mockKeyChain,
             log: log,
-            networkClient: networkClient)
+            networkClient: mockNetworkClient,
+        )
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        sut = nil
+        mockNetworkClient = nil
+        mockKeyChain = nil
+        log = nil
     }
     
 /*
@@ -41,15 +53,6 @@ final class StarlingBankApiServiceTests: XCTestCase {
  */
     
     func test_fetchAccounts_Success() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
         
         let expected = AccountsDto(
             accounts: [
@@ -59,14 +62,19 @@ final class StarlingBankApiServiceTests: XCTestCase {
                     defaultCategory: "some-default-category",
                     currency: "GBP",
                     createdAt: "2025-07-17",
-                    name: "Persaonal"
+                    name: "Personal"
                 )
             ]
         )
         
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(expected)
-        })
+        stub(mockKeyChain) { stub in
+            when(stub.get(identifier: any(), service: any())).thenReturn(accessToken)
+        }
+        
+        stub(mockNetworkClient) { stub in
+            when(stub.get(from: any(), headers: any()))
+                .thenReturn(try! JSONEncoder().encode(expected))
+        }
         
         guard let actual = try? await sut.fetchAccounts() else {
             XCTFail("Failed to fetch accounts.")
@@ -98,20 +106,6 @@ final class StarlingBankApiServiceTests: XCTestCase {
                 )
             ]
         )
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
         
         let errorResponse = ApiErrorDto(
             error: "invalid_token",
@@ -119,15 +113,19 @@ final class StarlingBankApiServiceTests: XCTestCase {
         )
         let errorData = try! JSONEncoder().encode(errorResponse)
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.badServerResponse(statusCode: 403, data: errorData)
-        })
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(freshToken)
-        })
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(expected)
-        })
+        stub(mockKeyChain) { stub in
+            when(stub.get(identifier: any(), service: any())).thenReturn(accessToken).thenReturn(accessToken)
+            when(stub.upsert(any(), identifier: any(), service: any())).thenDoNothing()
+        }
+        
+        stub(mockNetworkClient) { stub in
+            when(stub.get(from: any(), headers: any()))
+                .thenThrow(NetworkError.badServerResponse(statusCode: 403, data: errorData))
+                .thenReturn(try! JSONEncoder().encode(expected))
+            
+            when(stub.post(to: any(), headers: any(), components: any()))
+                .thenReturn(try! JSONEncoder().encode(freshToken))
+        }
         
         do {
             let actual = try await sut.fetchAccounts()
@@ -142,30 +140,23 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchAccounts_UnknownBadServerResponseStatusCode() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
-        
         let errorResponse = ApiErrorDto(
             error: "unknown_error",
             errorDescription: "",
         )
-        let errorData = try! JSONEncoder().encode(errorResponse)
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.badServerResponse(statusCode: 404, data: errorData)
-        })
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access-token")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(
+                NetworkError.badServerResponse(
+                    statusCode: 404,
+                    data: try! JSONEncoder().encode(errorResponse)
+                )
+            )
+        }
         
         do {
             _ = try await sut.fetchAccounts()
@@ -183,24 +174,15 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchAccounts_NetworkError() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
         }
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.requestTimedOut
-        })
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(
+                NetworkError.requestTimedOut
+            )
+        }
         
         do {
             _ = try await sut.fetchAccounts()
@@ -218,19 +200,15 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchAccounts_JsonDecodeFailureWhenDecodingReturnedData() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
         }
         
-        networkClient.handler.append({ _, _, _ in
-            return "Unusable Json Data".data(using: .utf8)!
-        })
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(
+                ApiError.dataCorrupted
+            )
+        }
         
         do {
             _ = try await sut.fetchAccounts()
@@ -251,18 +229,7 @@ final class StarlingBankApiServiceTests: XCTestCase {
  * Refresh Access Token
  * ==========================================================================
  */
-    
     func test_fetchIndividualInformation_Success() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
-        
         let expected = IndividualDto(
             title: "Mr",
             firstName: "Joe",
@@ -272,9 +239,13 @@ final class StarlingBankApiServiceTests: XCTestCase {
             phone: "079000000001"
         )
         
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(expected)
-        })
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenReturn(try! JSONEncoder().encode(expected))
+        }
         
         guard let actual = try? await sut.fetchIndividualInformation() else {
             XCTFail("Failed to fetch individual information")
@@ -293,20 +264,6 @@ final class StarlingBankApiServiceTests: XCTestCase {
             expires_in: 3600,
             scope: "bunch; of; different; scopes;"
         )
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
         
         let expected = IndividualDto(
             title: "Mr",
@@ -320,17 +277,19 @@ final class StarlingBankApiServiceTests: XCTestCase {
             error: "invalid_token",
             errorDescription: "Unable to validate token. Might it be expired?"
         )
-        let errorData = try! JSONEncoder().encode(errorResponse)
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.badServerResponse(statusCode: 403, data: errorData)
-        })
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(freshToken)
-        })
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(expected)
-        })
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
+            stub.upsert(any(), identifier: any(), service: any()).thenDoNothing()
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any())
+                .thenThrow(NetworkError.badServerResponse(statusCode: 403, data: try! JSONEncoder().encode(errorResponse)))
+                .thenReturn(try! JSONEncoder().encode(expected))
+            
+            stub.post(to: any(), headers: any(), components: any()).thenReturn(try! JSONEncoder().encode(freshToken))
+        }
         
         do {
             let actual = try await sut.fetchIndividualInformation()
@@ -349,30 +308,18 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchIndividualInformation_UnknownBadServerResponse() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
-        }
-        
         let errorResponse = ApiErrorDto(
             error: "unknown_error",
             errorDescription: "",
         )
-        let errorData = try! JSONEncoder().encode(errorResponse)
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.badServerResponse(statusCode: 404, data: errorData)
-        })
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(NetworkError.badServerResponse(statusCode: 404, data: try! JSONEncoder().encode(errorResponse)))
+        }
         
         do {
             _ = try await sut.fetchIndividualInformation()
@@ -390,24 +337,13 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchIndividualInformation_NetworkError() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
         }
         
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.requestTimedOut
-        })
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(NetworkError.requestTimedOut)
+        }
         
         do {
             _ = try await sut.fetchIndividualInformation()
@@ -425,19 +361,13 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_fetchIndividualInformation_JsonDecodeFailureWhenDecodingReturnedData() async {
-        do {
-            try keyChain.insert(
-                "access-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.accessTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
         }
         
-        networkClient.handler.append({ _, _, _ in
-            return "Unusable Json Data".data(using: .utf8)!
-        })
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(ApiError.dataCorrupted)
+        }
         
         do {
             _ = try await sut.fetchIndividualInformation()
@@ -468,36 +398,37 @@ final class StarlingBankApiServiceTests: XCTestCase {
             scope: "bunch; of; different; scopes;"
         )
         
-        networkClient.handler.append({ _, _, _ in
-            return try JSONEncoder().encode(expected)
-        })
-        do {
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: equal(to: KeyChainTokens.refreshTokenIdentifier), service: equal(to: KeyChainTokens.service))
+                .thenReturn("refresh_token")
+            
+            stub.upsert(any(), identifier: any(), service: any()).thenDoNothing()
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.post(to: any(), headers: any(), components: any())
+                .thenReturn(try! JSONEncoder().encode(expected))
         }
         
         do {
             try await sut.refreshAccessToken()
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            XCTFail("Unexpected error. Got: \(error)")
         }
         
-        XCTAssertEqual(
-            expected.access_token,
-            try keyChain.get(identifier: KeyChainTokens.accessTokenIdentifier, service: KeyChainTokens.service)
-        )
-        XCTAssertEqual(
-            expected.refresh_token,
-            try keyChain.get(identifier: KeyChainTokens.refreshTokenIdentifier, service: KeyChainTokens.service)
-        )
+        verify(mockKeyChain).upsert(equal(to: expected.access_token.data(using: .utf8)!), identifier: equal(to: KeyChainTokens.accessTokenIdentifier), service: equal(to: KeyChainTokens.service))
+        verify(mockKeyChain).upsert(equal(to: expected.refresh_token.data(using: .utf8)!), identifier: equal(to: KeyChainTokens.refreshTokenIdentifier), service: equal(to: KeyChainTokens.service))
     }
     
     func test_refreshAccessToken_MissingRefreshToken() async {
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: equal(to: KeyChainTokens.refreshTokenIdentifier), service: equal(to: KeyChainTokens.service)).thenReturn("")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.post(to: any(), headers: any(), components: any()).thenThrow(ApiError.missingRefreshToken)
+        }
+        
         do {
             _ = try await sut.refreshAccessToken()
             XCTFail("Expected ApiError.missingRefreshToken")
@@ -514,18 +445,13 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_refreshAccessToken_NetworkError() async {
-        do {
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access-token")
         }
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.requestTimedOut
-        })
+        
+        stub(mockNetworkClient) { stub in
+            stub.post(to: any(), headers: any(), components: any()).thenThrow(NetworkError.requestTimedOut)
+        }
         
         do {
             _ = try await sut.refreshAccessToken()
@@ -545,20 +471,19 @@ final class StarlingBankApiServiceTests: XCTestCase {
             error: "invalid_request",
             errorDescription: "Incorrect content type. Must be application/x-www-form-urlencoded"
         )
-        let errorData = try! JSONEncoder().encode(errorResponse)
         
-        do {
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: equal(to: KeyChainTokens.refreshTokenIdentifier), service: equal(to: KeyChainTokens.service)).thenReturn("refresh_token")
         }
-        networkClient.handler.append({ _, _, _ in
-            throw NetworkError.badServerResponse(statusCode: 400, data: errorData)
-        })
+        
+        stub(mockNetworkClient) { stub in
+            stub.post(to: any(), headers: any(), components: any()).thenThrow(
+                NetworkError.badServerResponse(
+                    statusCode: 400,
+                    data: try! JSONEncoder().encode(errorResponse)
+                )
+            )
+        }
         
         do {
             _ = try await sut.refreshAccessToken()
@@ -575,18 +500,13 @@ final class StarlingBankApiServiceTests: XCTestCase {
     }
     
     func test_refreshAccessToken_JSONDecodingFails() async {
-        do {
-            try keyChain.insert(
-                "refresh-token".data(using: .utf8)!,
-                identifier: KeyChainTokens.refreshTokenIdentifier,
-                service: KeyChainTokens.service
-            )
-        } catch {
-            XCTFail("Could not insert keychain.")
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: equal(to: KeyChainTokens.refreshTokenIdentifier), service: KeyChainTokens.service).thenReturn("refresh_token")
         }
-        networkClient.handler.append({ _, _, _ in
-            return "Some invalid json that should not be accepted".data(using: .utf8)!
-        })
+        
+        stub(mockNetworkClient) { stub in
+            stub.post(to: any(), headers: any(), components: any()).thenThrow(ApiError.dataCorrupted)
+        }
         
         do {
             _ = try await sut.refreshAccessToken()
@@ -601,4 +521,3 @@ final class StarlingBankApiServiceTests: XCTestCase {
         }
     }
 }
-

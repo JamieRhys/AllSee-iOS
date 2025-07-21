@@ -10,13 +10,13 @@ target 'AllSee' do
   pod 'SnapKit'
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'Swinject'
 
   target 'AllSeeTests' do
     inherit! :search_paths
     # Pods for testing
     pod 'RxBlocking'
     pod 'RxTest'
+    pod 'Cuckoo'
   end
 
   target 'AllSeeUITests' do

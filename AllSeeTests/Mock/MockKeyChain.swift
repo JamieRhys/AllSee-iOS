@@ -8,7 +8,7 @@
 import XCTest
 @testable import AllSee
 
-final class MockKeyChain: KeyChainStorable {
+final class MockKeyChain2: KeyChainStorable {
     var storage: [String : Data] = [:]
     
     func insert(_ token: Data, identifier: String, service: String) throws {
