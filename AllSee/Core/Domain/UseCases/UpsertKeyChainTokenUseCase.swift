@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol UpsertKeyChainTokenuseCase {
+protocol UpsertKeyChainTokenUseCase {
     func execute(_ token: String, identifier: String, service: String) throws
 }
 
-class UpsertKeyChainTokenUseCaseImpl: UpsertKeyChainTokenuseCase {
+class UpsertKeyChainTokenUseCaseImpl: UpsertKeyChainTokenUseCase {
     func execute(_ token: String, identifier: String, service: String) throws {
         try KeyChain().upsert(
             token.data(using: String.Encoding.utf8)!,
