@@ -375,6 +375,16 @@ errorType: Error.self,            superclassCall: Cuckoo.MockManager.crashOnProt
         )
     }
     
+    func fetchAccountHolder() async throws -> AccountHolderDto {
+        return try await cuckoo_manager.callThrows(
+            "fetchAccountHolder() async throws -> AccountHolderDto",
+            parameters: (),
+            escapingParameters: (),
+errorType: Error.self,            superclassCall: Cuckoo.MockManager.crashOnProtocolSuperclassCall(),
+            defaultCall: await __defaultImplStub!.fetchAccountHolder()
+        )
+    }
+    
     func fetchIndividualInformation() async throws -> IndividualDto {
         return try await cuckoo_manager.callThrows(
             "fetchIndividualInformation() async throws -> IndividualDto",
@@ -406,6 +416,14 @@ errorType: Error.self,            superclassCall: Cuckoo.MockManager.crashOnProt
             let matchers: [Cuckoo.ParameterMatcher<Void>] = []
             return .init(stub: cuckoo_manager.createStub(for: MockStarlingBankApiService.self,
                 method: "fetchAccounts() async throws -> AccountsDto",
+                parameterMatchers: matchers
+            ))
+        }
+        
+        func fetchAccountHolder() -> Cuckoo.ProtocolStubThrowingFunction<(), AccountHolderDto,Error> {
+            let matchers: [Cuckoo.ParameterMatcher<Void>] = []
+            return .init(stub: cuckoo_manager.createStub(for: MockStarlingBankApiService.self,
+                method: "fetchAccountHolder() async throws -> AccountHolderDto",
                 parameterMatchers: matchers
             ))
         }
@@ -452,6 +470,18 @@ errorType: Error.self,            superclassCall: Cuckoo.MockManager.crashOnProt
         
         
         @discardableResult
+        func fetchAccountHolder() -> Cuckoo.__DoNotUse<(), AccountHolderDto> {
+            let matchers: [Cuckoo.ParameterMatcher<Void>] = []
+            return cuckoo_manager.verify(
+                "fetchAccountHolder() async throws -> AccountHolderDto",
+                callMatcher: callMatcher,
+                parameterMatchers: matchers,
+                sourceLocation: sourceLocation
+            )
+        }
+        
+        
+        @discardableResult
         func fetchIndividualInformation() -> Cuckoo.__DoNotUse<(), IndividualDto> {
             let matchers: [Cuckoo.ParameterMatcher<Void>] = []
             return cuckoo_manager.verify(
@@ -482,6 +512,10 @@ class StarlingBankApiServiceStub:StarlingBankApiService, @unchecked Sendable {
     
     func fetchAccounts() async throws -> AccountsDto {
         return DefaultValueRegistry.defaultValue(for: (AccountsDto).self)
+    }
+    
+    func fetchAccountHolder() async throws -> AccountHolderDto {
+        return DefaultValueRegistry.defaultValue(for: (AccountHolderDto).self)
     }
     
     func fetchIndividualInformation() async throws -> IndividualDto {
