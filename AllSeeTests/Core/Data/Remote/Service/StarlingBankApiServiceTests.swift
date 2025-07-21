@@ -226,6 +226,123 @@ final class StarlingBankApiServiceTests: XCTestCase {
     
 /*
  * ==========================================================================
+ * Fetch Account Holder
+ * ==========================================================================
+ */
+    
+    func test_fetchAccountHolder_Success() async {
+        let expected = AccountHolderDto(
+            accountHolderUid: UUID().uuidString,
+            accountHolderType: "INDIVIDUAL"
+        )
+        
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenReturn(try! JSONEncoder().encode(expected))
+        }
+        
+        guard let actual = try? await sut.fetchAccountHolder() else {
+            XCTFail("Failed to fetch account holder")
+            return // to satisfy xcode
+        }
+        
+        XCTAssertEqual(expected.accountHolderUid, actual.accountHolderUid)
+        XCTAssertEqual(expected.accountHolderType, actual.accountHolderType)
+    }
+    
+    func test_fetchAccountHolder_whenApiErrorThrown_thenFunctionPassesToCaller() async {
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenThrow(ApiError.missingAccessToken)
+        }
+        
+        do {
+            _ = try await sut.fetchAccountHolder()
+            XCTFail("Expected an ApiError.missingAccessToken to be thrown here.")
+        } catch let error as ApiError {
+            switch error {
+            case ApiError.missingAccessToken: XCTAssertTrue(true)
+            default: XCTFail("Expected an ApiError.missingAccessToken to be thrown here. Got: \(error)")
+            }
+        } catch {
+            XCTFail("Expected an ApiError.missingAccessToken to be thrown here. Got: \(error)")
+        }
+    }
+    
+    func test_fetchAccountHolder_whenBadServerResponse403Thrown_thenRefreshOfTokenIsAttempted() async {
+        let freshToken = FreshAccessTokenDto(
+            access_token: "fresh_access-token",
+            refresh_token: "fresh_refresh-token",
+            token_type: "refresh-token",
+            expires_in: 3600,
+            scope: "bunch; of; different; scopes;"
+        )
+        let errorResponse = ApiErrorDto(
+            error: "invalid_token",
+            errorDescription: "Unable to validate provided token"
+        )
+        let expected = AccountHolderDto(
+            accountHolderUid: UUID().uuidString,
+            accountHolderType: "INDIVIDUAL"
+        )
+        
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn(accessToken).thenReturn(accessToken)
+            stub.upsert(any(), identifier: any(), service: any()).thenDoNothing()
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any())
+                .thenThrow(NetworkError.badServerResponse(statusCode: 403, data: try! JSONEncoder().encode(errorResponse)))
+                .thenReturn(try! JSONEncoder().encode(expected))
+            
+            stub.post(to: any(), headers: any(), components: any())
+                .thenReturn(try! JSONEncoder().encode(freshToken))
+        }
+        
+        do {
+            let actual = try await sut.fetchAccountHolder()
+            
+            XCTAssertEqual(expected.accountHolderUid, actual.accountHolderUid)
+            XCTAssertEqual(expected.accountHolderType, actual.accountHolderType)
+        } catch {
+            XCTFail("Pass expected here. Got: \(error)")
+        }
+    }
+    
+    func test_fetchAccountHolder_whenInvalidServerResponseThrown_thenFunctionCorrectlyHandlesError() async {
+        let errorResponse = ApiErrorDto(
+            error: "not_found",
+            errorDescription: "Page not found!"
+        )
+        
+        stub(mockKeyChain) { stub in
+            stub.get(identifier: any(), service: any()).thenReturn("access_token")
+        }
+        
+        stub(mockNetworkClient) { stub in
+            stub.get(from: any(), headers: any()).thenThrow(
+                NetworkError.badServerResponse(statusCode: 404, data: try! JSONEncoder().encode(errorResponse))
+            )
+        }
+        
+        do {
+            _ = try await sut.fetchAccountHolder()
+            XCTFail("Expected to fail here.")
+        } catch let error as ApiError {
+            switch error {
+            case ApiError.invalidResponse: XCTAssertTrue(true)
+            default: XCTFail("Expected ApiError.invalidResponse to be thrown. Got: \(error)")
+            }
+        } catch {
+            XCTFail("Expected ApiError.invalidResponse to be thrown. Got: \(error)")
+        }
+    }
+    
+/*
+ * ==========================================================================
  * Refresh Access Token
  * ==========================================================================
  */
