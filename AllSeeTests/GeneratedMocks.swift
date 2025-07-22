@@ -528,3 +528,167 @@ class StarlingBankApiServiceStub:StarlingBankApiService, @unchecked Sendable {
 }
 
 
+
+
+// MARK: - Mocks generated from file: 'AllSee/Core/Domain/UseCases/UpsertKeyChainTokenUseCase.swift'
+
+import Cuckoo
+import Foundation
+@testable import AllSee
+
+class MockUpsertKeyChainTokenUseCase: UpsertKeyChainTokenUseCase, Cuckoo.ProtocolMock, @unchecked Sendable {
+    typealias MocksType = UpsertKeyChainTokenUseCase
+    typealias Stubbing = __StubbingProxy_UpsertKeyChainTokenUseCase
+    typealias Verification = __VerificationProxy_UpsertKeyChainTokenUseCase
+
+    // Original typealiases
+
+    let cuckoo_manager = Cuckoo.MockManager.preconfiguredManager ?? Cuckoo.MockManager(hasParent: false)
+
+    private var __defaultImplStub: (any UpsertKeyChainTokenUseCase)?
+
+    func enableDefaultImplementation(_ stub: any UpsertKeyChainTokenUseCase) {
+        __defaultImplStub = stub
+        cuckoo_manager.enableDefaultStubImplementation()
+    }
+
+    
+    func execute(_ p0: String, identifier p1: String, service p2: String) throws {
+        return try cuckoo_manager.callThrows(
+            "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+            parameters: (p0, p1, p2),
+            escapingParameters: (p0, p1, p2),
+errorType: Error.self,            superclassCall: Cuckoo.MockManager.crashOnProtocolSuperclassCall(),
+            defaultCall: __defaultImplStub!.execute(p0, identifier: p1, service: p2)
+        )
+    }
+
+    struct __StubbingProxy_UpsertKeyChainTokenUseCase: Cuckoo.StubbingProxy {
+        private let cuckoo_manager: Cuckoo.MockManager
+    
+        init(manager: Cuckoo.MockManager) {
+            self.cuckoo_manager = manager
+        }
+        
+        func execute<M1: Cuckoo.Matchable, M2: Cuckoo.Matchable, M3: Cuckoo.Matchable>(_ p0: M1, identifier p1: M2, service p2: M3) -> Cuckoo.ProtocolStubNoReturnThrowingFunction<(String, String, String),Error> where M1.MatchedType == String, M2.MatchedType == String, M3.MatchedType == String {
+            let matchers: [Cuckoo.ParameterMatcher<(String, String, String)>] = [wrap(matchable: p0) { $0.0 }, wrap(matchable: p1) { $0.1 }, wrap(matchable: p2) { $0.2 }]
+            return .init(stub: cuckoo_manager.createStub(for: MockUpsertKeyChainTokenUseCase.self,
+                method: "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+                parameterMatchers: matchers
+            ))
+        }
+    }
+
+    struct __VerificationProxy_UpsertKeyChainTokenUseCase: Cuckoo.VerificationProxy {
+        private let cuckoo_manager: Cuckoo.MockManager
+        private let callMatcher: Cuckoo.CallMatcher
+        private let sourceLocation: Cuckoo.SourceLocation
+    
+        init(manager: Cuckoo.MockManager, callMatcher: Cuckoo.CallMatcher, sourceLocation: Cuckoo.SourceLocation) {
+            self.cuckoo_manager = manager
+            self.callMatcher = callMatcher
+            self.sourceLocation = sourceLocation
+        }
+        
+        
+        @discardableResult
+        func execute<M1: Cuckoo.Matchable, M2: Cuckoo.Matchable, M3: Cuckoo.Matchable>(_ p0: M1, identifier p1: M2, service p2: M3) -> Cuckoo.__DoNotUse<(String, String, String), Void> where M1.MatchedType == String, M2.MatchedType == String, M3.MatchedType == String {
+            let matchers: [Cuckoo.ParameterMatcher<(String, String, String)>] = [wrap(matchable: p0) { $0.0 }, wrap(matchable: p1) { $0.1 }, wrap(matchable: p2) { $0.2 }]
+            return cuckoo_manager.verify(
+                "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+                callMatcher: callMatcher,
+                parameterMatchers: matchers,
+                sourceLocation: sourceLocation
+            )
+        }
+    }
+}
+
+class UpsertKeyChainTokenUseCaseStub:UpsertKeyChainTokenUseCase, @unchecked Sendable {
+
+
+    
+    func execute(_ p0: String, identifier p1: String, service p2: String) throws {
+        return DefaultValueRegistry.defaultValue(for: (Void).self)
+    }
+}
+
+
+class MockUpsertKeyChainTokenUseCaseImpl: UpsertKeyChainTokenUseCaseImpl, Cuckoo.ClassMock, @unchecked Sendable {
+    typealias MocksType = UpsertKeyChainTokenUseCaseImpl
+    typealias Stubbing = __StubbingProxy_UpsertKeyChainTokenUseCaseImpl
+    typealias Verification = __VerificationProxy_UpsertKeyChainTokenUseCaseImpl
+
+    // Original typealiases
+
+    let cuckoo_manager = Cuckoo.MockManager.preconfiguredManager ?? Cuckoo.MockManager(hasParent: true)
+
+    private var __defaultImplStub: UpsertKeyChainTokenUseCaseImpl?
+
+    func enableDefaultImplementation(_ stub: UpsertKeyChainTokenUseCaseImpl) {
+        __defaultImplStub = stub
+        cuckoo_manager.enableDefaultStubImplementation()
+    }
+
+    
+    override func execute(_ p0: String, identifier p1: String, service p2: String) throws {
+        return try cuckoo_manager.callThrows(
+            "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+            parameters: (p0, p1, p2),
+            escapingParameters: (p0, p1, p2),
+errorType: Error.self,            superclassCall: super.execute(p0, identifier: p1, service: p2),
+            defaultCall: __defaultImplStub!.execute(p0, identifier: p1, service: p2)
+        )
+    }
+
+    struct __StubbingProxy_UpsertKeyChainTokenUseCaseImpl: Cuckoo.StubbingProxy {
+        private let cuckoo_manager: Cuckoo.MockManager
+    
+        init(manager: Cuckoo.MockManager) {
+            self.cuckoo_manager = manager
+        }
+        
+        func execute<M1: Cuckoo.Matchable, M2: Cuckoo.Matchable, M3: Cuckoo.Matchable>(_ p0: M1, identifier p1: M2, service p2: M3) -> Cuckoo.ClassStubNoReturnThrowingFunction<(String, String, String),Error> where M1.MatchedType == String, M2.MatchedType == String, M3.MatchedType == String {
+            let matchers: [Cuckoo.ParameterMatcher<(String, String, String)>] = [wrap(matchable: p0) { $0.0 }, wrap(matchable: p1) { $0.1 }, wrap(matchable: p2) { $0.2 }]
+            return .init(stub: cuckoo_manager.createStub(for: MockUpsertKeyChainTokenUseCaseImpl.self,
+                method: "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+                parameterMatchers: matchers
+            ))
+        }
+    }
+
+    struct __VerificationProxy_UpsertKeyChainTokenUseCaseImpl: Cuckoo.VerificationProxy {
+        private let cuckoo_manager: Cuckoo.MockManager
+        private let callMatcher: Cuckoo.CallMatcher
+        private let sourceLocation: Cuckoo.SourceLocation
+    
+        init(manager: Cuckoo.MockManager, callMatcher: Cuckoo.CallMatcher, sourceLocation: Cuckoo.SourceLocation) {
+            self.cuckoo_manager = manager
+            self.callMatcher = callMatcher
+            self.sourceLocation = sourceLocation
+        }
+        
+        
+        @discardableResult
+        func execute<M1: Cuckoo.Matchable, M2: Cuckoo.Matchable, M3: Cuckoo.Matchable>(_ p0: M1, identifier p1: M2, service p2: M3) -> Cuckoo.__DoNotUse<(String, String, String), Void> where M1.MatchedType == String, M2.MatchedType == String, M3.MatchedType == String {
+            let matchers: [Cuckoo.ParameterMatcher<(String, String, String)>] = [wrap(matchable: p0) { $0.0 }, wrap(matchable: p1) { $0.1 }, wrap(matchable: p2) { $0.2 }]
+            return cuckoo_manager.verify(
+                "execute(_ p0: String, identifier p1: String, service p2: String) throws",
+                callMatcher: callMatcher,
+                parameterMatchers: matchers,
+                sourceLocation: sourceLocation
+            )
+        }
+    }
+}
+
+class UpsertKeyChainTokenUseCaseImplStub:UpsertKeyChainTokenUseCaseImpl, @unchecked Sendable {
+
+
+    
+    override func execute(_ p0: String, identifier p1: String, service p2: String) throws {
+        return DefaultValueRegistry.defaultValue(for: (Void).self)
+    }
+}
+
+

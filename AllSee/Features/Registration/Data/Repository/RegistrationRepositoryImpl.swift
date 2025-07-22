@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class RegistrationRepositoryImpl: RegistrationRepository {
     private let apiService: StarlingBankApiService
@@ -26,13 +27,11 @@ final class RegistrationRepositoryImpl: RegistrationRepository {
         do {
             let dto = try await apiService.fetchIndividualInformation()
             
-            let dateOfBirth = try dto.dateOfBirth.toDate()!
-            
             completion(.success(try individualMapper.toDomain(from: dto)))
         } catch is DateParsingErrors {
             completion(.failure(RepositoryErrors.cannotMapData))
         } catch {
-            completion(.failure(error))
+            completion(.failure(RepositoryErrors.unknownError(error)))
         }
     }
     
