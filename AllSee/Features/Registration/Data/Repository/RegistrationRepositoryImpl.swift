@@ -35,9 +35,10 @@ final class RegistrationRepositoryImpl: RegistrationRepository {
         }
     }
     
-    /*
+    
     func saveAccessAndRefreshTokens(accessToken: String, refreshToken: String) throws {
-        <#code#>
+        try upsertKeyChainTokenUseCase.execute(accessToken, identifier: KeyChainTokens.accessTokenIdentifier, service: KeyChainTokens.service)
+        try upsertKeyChainTokenUseCase.execute(accessToken, identifier: KeyChainTokens.refreshTokenIdentifier, service: KeyChainTokens.service)
     }
-    */
+    
 }
