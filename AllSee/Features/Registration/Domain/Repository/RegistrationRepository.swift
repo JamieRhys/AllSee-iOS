@@ -11,5 +11,5 @@ protocol RegistrationRepository {
     
     func fetchIndividualInformation(completion: @escaping (Result<Individual, Error>) -> Void) async throws
     
-    //func saveAccessAndRefreshTokens(accessToken: String, refreshToken: String) throws
+    func saveAccessAndRefreshTokens(accessToken: String, refreshToken: String) throws
 }
