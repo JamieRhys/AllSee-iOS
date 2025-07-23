@@ -38,7 +38,10 @@ class RegistrationViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBindings()
-        
+        setupUi()
+    }
+    
+    private func setupUi() {
         mainContainer.axis = .vertical
         mainContainer.distribution = .equalSpacing
         mainContainer.alignment = .center
