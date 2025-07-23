@@ -1,6 +1,72 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "errorDialog.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oh, no!"
+          }
+        }
+      }
+    },
+    "errorMessage.emptyAccessToken" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access token cannot be empty."
+          }
+        }
+      }
+    },
+    "errorMessage.emptyRefreshToken" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh token cannot be empty."
+          }
+        }
+      }
+    },
+    "errorMessage.invalidTokens" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid access or refresh token. Please enter a new one."
+          }
+        }
+      }
+    },
+    "errorMessage.tokensNotSaved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save access or refresh token to KeyChain."
+          }
+        }
+      }
+    },
+    "errorMessage.unknownError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not retrieve error reason."
+          }
+        }
+      }
+    },
     "label.next" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8,6 +74,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next"
+          }
+        }
+      }
+    },
+    "label.no" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No"
+          }
+        }
+      }
+    },
+    "label.ok" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "label.yes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes"
           }
         }
       }
@@ -52,6 +151,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Refresh Token"
+          }
+        }
+      }
+    },
+    "userConfirmationDialog.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've provided the access token for %1$@ %2$@. Is this you?"
+          }
+        }
+      }
+    },
+    "userConfirmationDialog.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is this you?"
           }
         }
       }

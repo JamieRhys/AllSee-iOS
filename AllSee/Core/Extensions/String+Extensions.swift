@@ -18,6 +18,15 @@ extension String {
             throw DateParsingErrors.invalidDateString
         }
         
+        if self.count == 10 {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            
+            if let date = formatter.date(from: self) { return date }
+        }
+        
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         

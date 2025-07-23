@@ -19,6 +19,8 @@ final class MainCoordinator : Coordinator {
     private let apiService: StarlingBankApiService
     private let keyChain: KeyChainStorable
     private let networkClient: NetworkClient
+    private let individualMapper: IndividualMapper
+    private let upsertKeyChainTokenUseCase: UpsertKeyChainTokenUseCase
     
     init(navController: UINavigationController) {
         self.navController = navController
@@ -32,6 +34,8 @@ final class MainCoordinator : Coordinator {
             log: log,
             networkClient: networkClient
         )
+        self.individualMapper = IndividualMapper()
+        self.upsertKeyChainTokenUseCase = UpsertKeyChainTokenUseCaseImpl()
     }
     
     func start() {
@@ -39,7 +43,12 @@ final class MainCoordinator : Coordinator {
     }
     
     func showRegistrationView() {
-        let child = RegistrationCoordinator(navController: navController)
+        let child = RegistrationCoordinator(
+            navController: navController,
+            apiService: apiService,
+            individualMapper: individualMapper,
+            upsertKeyChainTokenUseCase: upsertKeyChainTokenUseCase
+        )
         child.parentCoordinator = self
         childCoordinators.append(child)
         child.start()

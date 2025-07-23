@@ -7,13 +7,17 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 class RegistrationViewController : UIViewController {
     private let viewModel: RegistrationViewModel
     var coordinator: RegistrationCoordinator?
+    private let disposeBag = DisposeBag()
     
     private let mainContainer = UIStackView()
     
+    private let errorLabelAccessToken = UILabel.caption(text: NSLocalizedString("errorMessage.emptyAccessToken", comment: ""))
+    private let errorLabelRefreshToken = UILabel.caption(text: NSLocalizedString("errorMessage.emptyRefreshToken", comment: ""))
     private let labelWelcome = UILabel.headline(text: NSLocalizedString("registrationView.labelWelcome", comment: ""))
     private let labelTokenInstructions = UILabel.body(text: NSLocalizedString("registrationView.labelTokenInstructions", comment: ""))
     
@@ -33,6 +37,7 @@ class RegistrationViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureBindings()
         
         mainContainer.axis = .vertical
         mainContainer.distribution = .equalSpacing
@@ -43,6 +48,12 @@ class RegistrationViewController : UIViewController {
         mainContainer.addBackground(color: UIColor.white.withAlphaComponent(0.15))
         
         labelTokenInstructions.textAlignment = .center
+        
+        errorLabelAccessToken.textColor = AppColor.error
+        errorLabelAccessToken.isHidden = true
+        
+        errorLabelRefreshToken.textColor = AppColor.error
+        errorLabelRefreshToken.isHidden = true
         
         textfieldAccessToken.placeholder = NSLocalizedString("registrationView.placeholderAccessToken", comment: "")
         textfieldAccessToken.addTarget(self, action: #selector(onAccessTokenChanged), for: .editingChanged)
@@ -57,7 +68,9 @@ class RegistrationViewController : UIViewController {
         mainContainer.addArrangedSubview(labelWelcome)
         mainContainer.addArrangedSubview(labelTokenInstructions)
         mainContainer.addArrangedSubview(textfieldAccessToken)
+        mainContainer.addArrangedSubview(errorLabelAccessToken)
         mainContainer.addArrangedSubview(textfieldRefreshToken)
+        mainContainer.addArrangedSubview(errorLabelRefreshToken)
         mainContainer.addArrangedSubview(buttonNext)
         view.addSubview(mainContainer)
         
@@ -84,15 +97,42 @@ class RegistrationViewController : UIViewController {
         }
     }
     
-    @objc private func onNextButtonTapped() {
-        print("Next tapped.")
+    private func showErrorDialog() {
+        
+        //coordinator?.showErrorDialog(errorMessage: viewModel.errorMessage)
     }
     
-    @objc private func onAccessTokenChanged() {
-        
+    private func showUserConfirmationDialog() {
+        /*
+        coordinator?.showUserConfirmationDialog(
+            firstName: viewModel.individual?.firstName,
+            lastName: viewModel.individual?.lastName
+        )
+         */
     }
     
-    @objc private func onRefreshTokenChanged() {
+    @objc private func onNextButtonTapped() { viewModel.onNextButtonTap() }
+    
+    @objc private func onAccessTokenChanged() { viewModel.updateAccessToken(textfieldAccessToken.text ?? "") }
+    
+    @objc private func onRefreshTokenChanged() { viewModel.updateRefreshToken(textfieldRefreshToken.text ?? "") }
+    
+    private func configureBindings() {
+        viewModel
+            .showAccessTokenErrorMessage
+            .drive(onNext: { [weak self] error in
+                self?.errorLabelAccessToken.isHidden = !error
+            })
+            .disposed(by: disposeBag)
         
+        viewModel
+            .showRefreshTokenErrorMessage
+            .drive(onNext: { [weak self] error in
+                self?.errorLabelRefreshToken.isHidden = !error
+            })
+            .disposed(by: disposeBag)
+        
+        // TODO: configure bindings to errorDialogMessage.
+        // TODO: configure bindings to individual. (This also needs to be exposed to the view controller.
     }
 }

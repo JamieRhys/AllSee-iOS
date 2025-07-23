@@ -22,7 +22,7 @@ final class StarlingBankApiServiceImpl: StarlingBankApiService {
     private let keyChain: KeyChainStorable
     private let log: Logger
     private let networkClient: NetworkClient
-    private let baseUrl = URL(string: "https://api-starlingbank.com/api/v2/")!
+    private let baseUrl = URL(string: "https://api-sandbox.starlingbank.com/api/v2/")!
     
     init(
         keyChain: KeyChainStorable,
